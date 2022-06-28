@@ -2,8 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <script>
+      window.onload = function () {
           const ui = SwaggerUIBundle({
-          url: "swagger.yaml",
+          url: "placeHereExactLinkToYourYamlFile",
           dom_id: '#swagger-ui',
           deepLinking: true,
           presets: [
@@ -15,7 +16,7 @@
           ],
           layout: "StandaloneLayout"
         })
-         window.ui = ui
+          window.ui = ui
       }
     </script>
   <head>
