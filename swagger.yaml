@@ -1,0 +1,2061 @@
+swagger: '2.0'
+info:
+  description: >-
+    This is our group KH-067-01-QA demo project for testing API [rabota.ua](https://rabota.ua). For this demo project you can use the api key `bearer-token` to test the API.
+  version: v1
+  title: Rabota.UA Web Api
+host: api.rabota.ua
+schemes:
+  - https
+paths:
+  /account/photo:
+    get:
+      tags:
+        - Account
+      summary: Upload the photo to the account
+      operationId: AccountJobsearchRegister_Photo
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+  /account/login:
+    get:
+      tags:
+        - Account
+      summary: Get Login
+      operationId: Account_Get
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserModel'
+    post:
+      tags:
+        - Account
+      summary: Authorization request
+      operationId: Account_Post
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: model
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LoginUserModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '204':
+          description: NoContent
+        '400':
+          description: BadRequest
+          schema:
+            type: string
+  /account/autologin-email:
+    get:
+      tags:
+        - Account
+      summary: Autologin via email
+      operationId: Account_SendEmailWithAutoLoginLink
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: email
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /account/logout:
+    post:
+      tags:
+        - Account
+      summary: Logs out current logged in user session
+      operationId: Account_Logout
+      consumes: []
+      produces: []
+      responses:
+        '204':
+          description: No Content
+  /account/userinfo:
+    put:
+      tags:
+        - Account
+      summary: Update information about user
+      operationId: Account_ChangeUserInfo
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: userInfo
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /account/password/reason/changed:
+    put:
+      tags:
+        - Account
+      summary: Change the password
+      operationId: Account_ChangePassword
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: model
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PasswordUserModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /account/password/recovery-email/{email}:
+    post:
+      tags:
+        - Account
+      summary: Sends letter to specified email with url to password change page.
+      operationId: Account_SendPasswordRecoveryKeyToEmail
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: email
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /account/password/reason/forgotten-email:
+    put:
+      tags:
+        - Account
+      summary: >-
+        Updates password for email that is extracted from passed "password
+        recovery key".
+      operationId: Account_ChangePasswordByEmail
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: request
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PasswordChangeViaEmail'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /account/password/recovery-phone:
+    post:
+      tags:
+        - Account
+      summary: Password recovery via phone
+      operationId: Account_SendPasswordRecoveryCodeToPhone
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: phone
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /account/jobsearch/register:
+    post:
+      tags:
+        - Account Jobsearcher
+      summary: Register user by email or phone
+      operationId: AccountJobsearchRegister_Register
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: model
+          in: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/definitions/RegisterAccountModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /account/jobseeker/{notebookId}/resumeviewscount:
+    get:
+      tags:
+        - Account Jobsearcher
+      summary: Shows count of resumes user
+      operationId: VacancyJobsearcher_GetResumeViewsCount
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: notebookId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            format: int32
+            type: integer
+  /account/jobsearch/recommended:
+    post:
+      tags:
+        - Account Jobsearcher
+      summary: Recommends vacancies for user based on his city and keywords
+      operationId: VacancyJobsearcher_GetRecommended
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: start
+          in: query
+          description: From which vacancy number return recommendation list
+          required: false
+          type: integer
+          format: int32
+          maximum: 2147483647
+          minimum: 0
+        - name: count
+          in: query
+          description: >-
+            How many vacancies to take from the top of the recommendation result
+            list
+          required: false
+          type: integer
+          format: int32
+          maximum: 2147483647
+          minimum: 0
+        - name: guid
+          in: query
+          description: "User id (if not specified, than current user id is taken).\r\nBased on this, City and KeyWords are taken for search."
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VacancySearchResponse'
+  /account/jobsearch/cvview:
+    get:
+      tags:
+        - Account Jobsearcher
+      summary: Job Search by number CV
+      operationId: VacancyJobsearcher_CvView
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: start
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: count
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: cvId
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ResumeViewResponse'
+  /account/jobsearch/vacancy_pool:
+    get:
+      tags:
+        - Account Jobsearcher
+      summary: >-
+        Returns salary wishes based on city and position. If vacancyId is
+        specified, then for a single vacancy
+      operationId: VacancyJobsearcher_VacancyPool
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: pzId
+          in: query
+          required: true
+          type: integer
+          format: int32
+        - name: cityId
+          in: query
+          required: true
+          type: integer
+          format: int32
+        - name: vacancyId
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/WishesPoolResult'
+  /account/jobsearch/cvlist:
+    post:
+      tags:
+        - Account Jobsearcher
+      summary: Returns more extended info about jobseeker prof-resumes list for "My resumes" page
+      operationId: Apply_CvList
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ResumeListItemDTO'
+  /account/jobsearch/attachlist:
+    get:
+      tags:
+        - Account Jobsearcher
+      summary: LIst of attached files
+      operationId: GetAttachList
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: email
+          in: query
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AttachInfo'
+  /company/{id}:
+    get:
+      tags:
+        - Company
+      summary: Get information about company-employer
+      operationId: Company_Get
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CompanyInfo'
+  /companies:
+    get:
+      tags:
+        - Company
+      summary: Get list of companies for chosen rubric
+      operationId: Company_GetCompaniesInRubric
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: rubricId
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: keyword
+          in: query
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CompanyInRubricDto'
+  /dictionary/spheres:
+    get:
+      tags:
+        - Dictionary
+      summary: Get a list of used spheres on the site
+      operationId: Dictionary_GetSpheres
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataLocalized'
+  /dictionary/city:
+    get:
+      tags:
+        - Dictionary
+      summary: Check city id
+      operationId: Dictionary_GetCity
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CityDataLocalized'
+  /dictionary/education:
+    get:
+      tags:
+        - Dictionary
+      summary: Check education id
+      operationId: Dictionary_GetEducation
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataLocalized'
+  /dictionary/rubric:
+    get:
+      tags:
+        - Dictionary
+      summary: Receive information about Rubric
+      operationId: Dictionary_GetRubric
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataLocalized'
+  /dictionary/language/skill:
+    get:
+      tags:
+        - Dictionary
+      summary: Get informaton about used lunguage skills on the site
+      operationId: Dictionary_GetLanguageSkill
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataLocalized'
+  /dictionary/language:
+    get:
+      tags:
+        - Dictionary
+      summary: Get informaton about used lunguage on the site
+      operationId: Dictionary_GetLanguage
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LanguageDataLocalized'
+  /dictionary/regions:
+    get:
+      tags:
+        - Dictionary
+      summary: Get informaton about used regions on the site
+      operationId: Dictionary_GetRegions
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataLocalized'
+  /dictionary/keywords:
+    get:
+      tags:
+        - Dictionary
+      summary: Get informaton about used keywords on the site
+      operationId: Dictionary_GetKeywords
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+  /dictionary/popular-tags:
+    get:
+      tags:
+        - Dictionary
+      summary: Receive information about Popular Tags
+      operationId: Dictionary_GetPopularTags
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PopularTagInfo'
+  /resume/{resumeId}/language:
+    post:
+      tags:
+        - Resume
+      summary: Filling  about user language data in the Resume profile user
+      operationId: ResumeLanguage_Post
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+      produces: []
+      parameters:
+        - name: resumeId
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LanguageAbilityInfoDTO'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags:
+        - Resume
+      summary: Deleting  about user language data in the Resume profile user
+      operationId: ResumeLanguage_Delete
+      consumes: []
+      produces: []
+      parameters:
+        - name: resumeId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '204':
+          description: No Content
+  /resume:
+    get:
+      tags:
+        - Resume
+      summary: Returns short info about jobseeker prof-resumes list for "Apply" page.
+      operationId: Resume_GetJobseekerResumeList
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: notebookId
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ResumeShortListItemDTO'
+  /resume/{resumeId}/training:
+    post:
+      tags:
+        - Resume
+      summary: Filling  about user training data in the Resume profile user
+      operationId: ResumeTraining_Post
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: resumeId
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/TrainingInfoDTO'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /resume/{resumeId}/training/{trainingId}:
+    delete:
+      tags:
+        - Resume
+      summary: Deleting about user training data in the Resume profile user
+      operationId: ResumeTraining_Delete
+      consumes: []
+      produces: []
+      parameters:
+        - name: resumeId
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: trainingId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '204':
+          description: No Content
+  /resume/{resumeId}/photo:
+    post:
+      tags:
+        - Resume
+      summary: Add/change photo in CV
+      operationId: ResumePhoto_UploadResumePhoto
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+        - multipart/form-data
+        - application/octet-stream
+        - application/octet
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: resumeId
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: photo
+          in: formData
+          description: upload file
+          required: true
+          type: file
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+    delete:
+      tags:
+        - Resume
+      summary: Delete photo from CV
+      operationId: ResumePhoto_Delete
+      consumes: []
+      produces: []
+      parameters:
+        - name: resumeId
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '204':
+          description: No Content
+  /vacancy/search:
+    get:
+      tags:
+        - Vacancy
+      summary: Search for jobs by specified filters and parameters
+      operationId: VacancySearch
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: uid
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: cid
+          in: query
+          required: false
+          type: string
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: count
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: ukrainian
+          in: query
+          required: false
+          type: boolean
+        - name: cityId
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: metroIds
+          in: query
+          required: false
+          type: array
+          items:
+            type: integer
+            format: int32
+          collectionFormat: multi
+        - name: districtIds
+          in: query
+          required: false
+          type: array
+          items:
+            type: integer
+            format: int32
+          collectionFormat: multi
+        - name: parentId
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: rubricIds
+          in: query
+          required: false
+          type: array
+          items:
+            type: integer
+            format: int32
+          collectionFormat: multi
+        - name: keyWords
+          in: query
+          required: false
+          type: string
+        - name: additionalKeywords
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+        - name: salary
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: noSalary
+          in: query
+          required: false
+          type: boolean
+        - name: showAgency
+          in: query
+          required: false
+          type: boolean
+        - name: lastViewDate
+          in: query
+          required: false
+          type: boolean
+        - name: scheduleId
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: profLevelIds
+          in: query
+          required: false
+          type: array
+          items:
+            type: integer
+            format: int32
+          collectionFormat: multi
+        - name: isSynonym
+          in: query
+          required: false
+          type: boolean
+        - name: period
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: nearRegions
+          in: query
+          required: false
+          type: boolean
+        - name: searchMode
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: sortBy
+          in: query
+          required: false
+          type: string
+          enum:
+            - Date
+            - Geo
+        - name: latitude
+          in: query
+          required: false
+          type: number
+          format: double
+        - name: longitude
+          in: query
+          required: false
+          type: number
+          format: double
+        - name: viewedVacancyIds
+          in: query
+          required: false
+          type: array
+          items:
+            type: integer
+            format: int32
+          collectionFormat: multi
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VacancySearchUserResponse'
+  /vacancy:
+    get:
+      tags:
+        - Vacancy
+      summary: Job Search by ID
+      operationId: VacancySearch_Get
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: ukrainian
+          in: query
+          required: false
+          type: boolean
+        - name: isFromElasticSearch
+          in: query
+          required: false
+          type: boolean
+        - name: cid
+          in: query
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VacancyFullDto'
+        '404':
+          description: NotFound
+          schema:
+            type: string
+  /vacancy/apply:
+    post:
+      tags:
+        - Vacancy
+      summary: Does job apply using created CV on web-site
+      operationId: VacancyApply_Apply
+      consumes:
+        - application/json
+        - text/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+      parameters:
+        - name: model
+          in: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/definitions/ApplyModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplyResponse'
+definitions:
+  UserModel:
+    description: "TODO: For some reason model description is not displayed as shown here\r\nhttp://wmpratt.com/swagger-and-asp-net-web-api-part-1/\r\nMaybe we can fix it."
+    required:
+      - username
+    type: object
+    properties:
+      uid:
+        format: int32
+        description: >-
+          Is assigned when user enters its email first time (in DB it is called
+          "EmailID", from table EmailSource)
+        type: integer
+      username:
+        type: string
+      remember:
+        type: boolean
+      jobsearcher:
+        type: boolean
+      notebookId:
+        format: int32
+        type: integer
+      multiUserId:
+        format: int32
+        type: integer
+      firstName:
+        type: string
+      lastName:
+        type: string
+      stateId:
+        enum:
+          - New
+          - ExpectationOfActivation
+          - NotActivated
+          - BlackList
+          - Validated
+          - Undefined
+          - Mega
+        type: string
+  LoginUserModel:
+    description: Used only for login("POST") purpose by clients
+    required:
+      - password
+    type: object
+    properties:
+      username:
+        type: string
+      phone:
+        type: string
+      password:
+        type: string
+      remember:
+        type: boolean
+  UserInfo:
+    required:
+      - name
+      - surname
+    type: object
+    properties:
+      name:
+        type: string
+      surname:
+        type: string
+  PasswordUserModel:
+    required:
+      - oldPassword
+      - newPassword
+    type: object
+    properties:
+      oldPassword:
+        type: string
+      newPassword:
+        type: string
+  PasswordChangeViaEmail:
+    type: object
+    properties:
+      key:
+        type: string
+      newPassword:
+        type: string
+  PasswordChangeViaPhone:
+    type: object
+    properties:
+      code:
+        type: string
+      phone:
+        type: string
+      newPassword:
+        type: string
+  RegisterAccountModel:
+    required:
+      - password
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      googleClientId:
+        description: >-
+          For SPA, Cid can be taken from cookie, but from apps pseudo-cid has to
+          be passed
+        type: string
+      password:
+        maxLength: 255
+        minLength: 0
+        type: string
+  EmailChangeRequest:
+    required:
+      - password
+    type: object
+    properties:
+      newEmail:
+        type: string
+      password:
+        type: string
+  VacancySearchResponse:
+    type: object
+    properties:
+      took:
+        format: int32
+        type: integer
+      start:
+        format: int32
+        type: integer
+      count:
+        format: int32
+        type: integer
+      total:
+        format: int64
+        type: integer
+      hasGeoCount:
+        format: int32
+        type: integer
+      errorMessage:
+        type: string
+      documents:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyResultItem'
+  VacancyResultItem:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      notebookId:
+        format: int32
+        type: integer
+      name:
+        type: string
+      cityName:
+        type: string
+      cityId:
+        format: int32
+        type: integer
+      districtId:
+        format: int32
+        type: integer
+      districtName:
+        type: string
+      metroId:
+        format: int32
+        type: integer
+      metroName:
+        type: string
+      metroBranchId:
+        format: int32
+        type: integer
+      isShowMap:
+        type: boolean
+      latitude:
+        format: double
+        type: number
+      longitude:
+        format: double
+        type: number
+      distanceText:
+        type: string
+      date:
+        format: date-time
+        type: string
+      addDate:
+        format: date-time
+        type: string
+      hot:
+        type: boolean
+      anonymous:
+        type: boolean
+      listTag:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyTag'
+      searchTags:
+        type: array
+        items:
+          $ref: '#/definitions/SynonymousDto'
+      companyName:
+        type: string
+      isShowMiniProf:
+        type: boolean
+      isEnableImage:
+        type: boolean
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyImageDto'
+      salary:
+        format: int32
+        type: integer
+      salaryComment:
+        type: string
+      profLevelId:
+        format: int32
+        type: integer
+      scheduleId:
+        format: int32
+        type: integer
+      isAgency:
+        type: boolean
+      vacancyAddress:
+        type: string
+      showProfile:
+        type: boolean
+      showLogo:
+        type: boolean
+      logo:
+        type: string
+      designTypeId:
+        enum:
+          - All
+          - Standard
+          - Custom
+          - Regional
+          - Free
+          - Anonymous
+          - Base
+          - Test
+        type: string
+      designBannerUrl:
+        type: string
+      description:
+        type: string
+      shortDescription:
+        type: string
+      dateTxt:
+        type: string
+      isSpecialNeeds:
+        type: boolean
+      isNew:
+        type: boolean
+      contactPerson:
+        type: string
+      contactPhone:
+        type: string
+      contactUrl:
+        type: string
+      branchId:
+        format: int32
+        type: integer
+      branchName:
+        type: string
+      isLiked:
+        type: boolean
+      oblastId:
+        format: int32
+        type: integer
+      languages:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyLanguageDto'
+      formApplyCustomUrl:
+        type: string
+      isApply:
+        type: boolean
+      applyDate:
+        format: date-time
+        type: string
+      noCvApply:
+        type: boolean
+      isActive:
+        type: boolean
+      verifiedCompany:
+        type: boolean
+      clusters:
+        type: array
+        items:
+          $ref: '#/definitions/ClusterDto'
+  VacancyTag:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      languageId:
+        format: int32
+        type: integer
+  SynonymousDto:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      synonymGroupId:
+        format: int32
+        type: integer
+      rate:
+        format: int32
+        type: integer
+      vacancySearchCount:
+        format: int32
+        type: integer
+  VacancyImageDto:
+    type: object
+    properties:
+      url:
+        type: string
+      description:
+        type: string
+  VacancyLanguageDto:
+    type: object
+    properties:
+      levelId:
+        format: int32
+        type: integer
+      languageId:
+        format: int32
+        type: integer
+      description:
+        type: string
+  ClusterDto:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      groups:
+        type: array
+        items:
+          $ref: '#/definitions/SynonymGroupDto'
+  SynonymGroupDto:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+  ResumeViewResponse:
+    type: object
+    properties:
+      total:
+        format: int32
+        type: integer
+      documents:
+        type: array
+        items:
+          $ref: '#/definitions/ResumeViewInfo'
+  ResumeViewInfo:
+    type: object
+    properties:
+      resumeId:
+        format: int32
+        type: integer
+      notebookId:
+        format: int32
+        type: integer
+      branchName:
+        type: string
+      companyName:
+        type: string
+      companyLogo:
+        type: string
+      speciality:
+        type: string
+      reviewDate:
+        format: date-time
+        type: string
+  WishesPoolResult:
+    type: object
+    properties:
+      pool:
+        type: array
+        items:
+          $ref: '#/definitions/WishesPoolItem'
+        readOnly: true
+      experience:
+        type: array
+        items:
+          $ref: '#/definitions/DataLocalized'
+        readOnly: true
+      salary:
+        type: array
+        items:
+          $ref: '#/definitions/DataLocalized'
+        readOnly: true
+  WishesPoolItem:
+    type: object
+    properties:
+      experienceId:
+        format: int32
+        type: integer
+      salaryId:
+        format: int32
+        type: integer
+      count:
+        format: int32
+        type: integer
+      percent:
+        format: int32
+        type: integer
+  DataLocalized:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      ru:
+        type: string
+      ua:
+        type: string
+      en:
+        type: string
+  ResumeListItemDTO:
+    type: object
+    properties:
+      resumeId:
+        format: int32
+        type: integer
+      name:
+        type: string
+      cityName:
+        type: string
+      photo:
+        type: string
+      stateId:
+        format: int32
+        type: integer
+      isAnonymous:
+        type: boolean
+      speciality:
+        type: string
+      addDate:
+        format: date-time
+        type: string
+      salary:
+        format: int32
+        type: integer
+      currencyId:
+        format: int32
+        type: integer
+      activeLevelId:
+        enum:
+          - None
+          - Public
+          - OnlyForVerifiedEmployer
+          - Hide
+          - ExceptEmployers
+          - StrongDefinedEmployer
+          - MegaEmployer
+        type: string
+      searchState:
+        enum:
+          - None
+          - Active
+          - NowWorking
+        type: string
+      isBannedByModerator:
+        type: boolean
+      countShown:
+        format: int32
+        type: integer
+      hasEnoughInfoForApply:
+        type: boolean
+      phone:
+        type: string
+      isPhoneConfirmed:
+        type: boolean
+  AttachInfo:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      fileName:
+        type: string
+      path:
+        type: string
+      notebookId:
+        format: int32
+        type: integer
+      lastSentDate:
+        format: date-time
+        type: string
+      email:
+        type: string
+  VacancySearchUserResponse:
+    type: object
+    properties:
+      took:
+        format: int32
+        type: integer
+      start:
+        format: int32
+        type: integer
+      count:
+        format: int32
+        type: integer
+      total:
+        format: int64
+        type: integer
+      hasGeoCount:
+        format: int32
+        type: integer
+      errorMessage:
+        type: string
+      documents:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyShortDto'
+  VacancyShortDto:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      logo:
+        type: string
+      designBannerUrl:
+        type: string
+      designBannerFullUrl:
+        type: string
+      publicationType:
+        enum:
+          - Undefined
+          - Optimum
+          - Proffessional
+          - Test
+          - Anonymous
+          - Bussines
+        type: string
+      date:
+        format: date-time
+        type: string
+      dateTxt:
+        type: string
+      hot:
+        type: boolean
+      salary:
+        format: int32
+        type: integer
+      salaryFrom:
+        format: int32
+        type: integer
+      salaryTo:
+        format: int32
+        type: integer
+      salaryComment:
+        type: string
+      cityName:
+        type: string
+      cityId:
+        format: int32
+        type: integer
+      metroName:
+        type: string
+      metroId:
+        format: int32
+        type: integer
+      districtName:
+        type: string
+      districtId:
+        format: int32
+        type: integer
+      notebookId:
+        format: int32
+        type: integer
+      companyName:
+        type: string
+      formApplyCustomUrl:
+        type: string
+      isLiked:
+        type: boolean
+      isApply:
+        type: boolean
+      applyDate:
+        format: date-time
+        type: string
+      lastViewDate:
+        format: date-time
+        type: string
+      distanceText:
+        type: string
+      latitude:
+        format: double
+        type: number
+      longitude:
+        format: double
+        type: number
+      shortDescription:
+        type: string
+      badges:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyBadgeDto'
+  VacancyBadgeDto:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+  CityDataLocalized:
+    type: object
+    properties:
+      centerId:
+        format: int32
+        type: integer
+      centerName:
+        type: string
+      regionName:
+        $ref: '#/definitions/RegionName'
+      vacancyCount:
+        format: int32
+        type: integer
+      locativeName:
+        $ref: '#/definitions/LocativeName'
+      id:
+        format: int32
+        type: integer
+      ru:
+        type: string
+      ua:
+        type: string
+      en:
+        type: string
+  RegionName:
+    type: object
+    properties:
+      ua:
+        type: string
+      ru:
+        type: string
+  LocativeName:
+    type: object
+    properties:
+      ua:
+        type: string
+      ru:
+        type: string
+  CompanyInfo:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      logo:
+        type: string
+      site:
+        type: string
+      description:
+        type: string
+      countEmployeeId:
+        format: int32
+        type: integer
+      verified:
+        type: boolean
+      hasMobileDesign:
+        type: boolean
+      facebookLink:
+        type: string
+      instagramLink:
+        type: string
+      linkedInLink:
+        type: string
+      fullAddress:
+        type: string
+  CompanyInRubricDto:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      logoUrl:
+        type: string
+  LanguageDataLocalized:
+    type: object
+    properties:
+      popular:
+        type: boolean
+      id:
+        format: int32
+        type: integer
+      ru:
+        type: string
+      ua:
+        type: string
+      en:
+        type: string
+  PopularTagInfo:
+    type: object
+    properties:
+      count:
+        format: int32
+        type: integer
+      id:
+        format: int32
+        type: integer
+      ru:
+        type: string
+      ua:
+        type: string
+      en:
+        type: string
+  LanguageAbilityInfoDTO:
+    type: object
+    properties:
+      languageId:
+        format: int32
+        type: integer
+      skillsLevel:
+        format: int32
+        type: integer
+      isCanBeInterviewed:
+        type: boolean
+      skillName:
+        type: string
+      languageName:
+        type: string
+      certificate:
+        type: string
+      resumeId:
+        format: int32
+        type: integer
+  ResumeShortListItemDTO:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      level:
+        enum:
+          - None
+          - Public
+          - OnlyForVerifiedEmployer
+          - Hide
+          - ExceptEmployers
+          - StrongDefinedEmployer
+          - MegaEmployer
+        type: string
+      hasEnoughInfoForApply:
+        type: boolean
+      lastApplyDate:
+        format: date-time
+        type: string
+  TrainingInfoDTO:
+    required:
+      - name
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      location:
+        type: string
+      description:
+        type: string
+      year:
+        format: int32
+        type: integer
+      resumeId:
+        format: int32
+        type: integer
+  VacancyFullDto:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      logo:
+        type: string
+      designBannerUrl:
+        type: string
+      designBannerFullUrl:
+        type: string
+      notebookId:
+        format: int32
+        type: integer
+      companyName:
+        type: string
+      verifiedCompany:
+        type: boolean
+      contactPerson:
+        type: string
+      contactPhoto:
+        type: string
+      contactPhone:
+        type: string
+      contactUrl:
+        type: string
+      contactURL:
+        type: string
+      socials:
+        type: array
+        items:
+          type: string
+      date:
+        format: date-time
+        type: string
+      dateTxt:
+        type: string
+      isActive:
+        type: boolean
+      isLiked:
+        type: boolean
+      isAgency:
+        type: boolean
+      noCvApply:
+        type: boolean
+      isApply:
+        type: boolean
+      applyDate:
+        format: date-time
+        type: string
+      isApplyViewed:
+        type: boolean
+      isEnableImage:
+        type: boolean
+      isShowMiniProf:
+        type: boolean
+      salary:
+        format: int32
+        type: integer
+      salaryFrom:
+        format: int32
+        type: integer
+      salaryTo:
+        format: int32
+        type: integer
+      salaryComment:
+        type: string
+      hot:
+        type: boolean
+      formApplyCustomUrl:
+        type: string
+      description:
+        type: string
+      branchId:
+        format: int32
+        type: integer
+      branchName:
+        type: string
+      cityId:
+        format: int32
+        type: integer
+      cityName:
+        type: string
+      vacancyAddress:
+        type: string
+      districtId:
+        format: int32
+        type: integer
+      districtName:
+        type: string
+      metroId:
+        format: int32
+        type: integer
+      metroName:
+        type: string
+      metroBranchId:
+        format: int32
+        type: integer
+      isShowMap:
+        type: boolean
+      latitude:
+        format: double
+        type: number
+      longitude:
+        format: double
+        type: number
+      publicationType:
+        enum:
+          - Undefined
+          - Optimum
+          - Proffessional
+          - Test
+          - Anonymous
+          - Bussines
+        type: string
+      customDesign:
+        $ref: '#/definitions/VacancyCustomDesignV2'
+      profLevelId:
+        format: int32
+        type: integer
+      scheduleId:
+        format: int32
+        type: integer
+      dataSource:
+        enum:
+          - Database
+          - Elastic
+        type: string
+      languages:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyLanguageDto'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyMediaItemDto'
+      mediaItems:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyMediaItemDto'
+      searchTags:
+        type: array
+        items:
+          $ref: '#/definitions/SynonymousDto'
+      clusters:
+        type: array
+        items:
+          $ref: '#/definitions/ClusterDto'
+      badges:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyBadgeDto'
+      candidatesScreeningOptions:
+        $ref: '#/definitions/CandidatesScreeningOptionsDto'
+  VacancyCustomDesignV2:
+    type: object
+    properties:
+      headerInfo:
+        $ref: '#/definitions/VacancyCustomHeader'
+      footerInfo:
+        $ref: '#/definitions/VacancyCustomFooter'
+      backgroundHtml:
+        type: string
+  VacancyMediaItemDto:
+    type: object
+    properties:
+      url:
+        type: string
+      type:
+        enum:
+          - UploadedImage
+          - YoutubeVideo
+        type: string
+      description:
+        type: string
+  CandidatesScreeningOptionsDto:
+    type: object
+    properties:
+      questionnaireId:
+        type: string
+      isEnabled:
+        type: boolean
+  VacancyCustomHeader:
+    type: object
+    properties:
+      mediaItems:
+        type: array
+        items:
+          $ref: '#/definitions/VacancyCustomHeaderItem'
+      videoPlayButtonImageUrl:
+        type: string
+  VacancyCustomFooter:
+    type: object
+    properties:
+      imageUrl:
+        type: string
+  VacancyCustomHeaderItem:
+    type: object
+    properties:
+      url:
+        type: string
+      videoCoverImageUrl:
+        type: string
+      type:
+        enum:
+          - Image
+          - YouTubeVideo
+        type: string
+  ApplyModel:
+    description: Job apply model for logged users (for web-ste and attached CVs both)
+    type: object
+    properties:
+      profCv:
+        type: boolean
+      hasCQ:
+        type: boolean
+      error:
+        type: string
+      phone:
+        type: string
+      cvId:
+        format: int32
+        type: integer
+      clientId:
+        type: string
+      cQuestLang:
+        type: array
+        items:
+          type: string
+      cQuestExp:
+        type: array
+        items:
+          type: string
+      vacancyId:
+        format: int32
+        maximum: 2147483647
+        minimum: 1
+        type: integer
+      letter:
+        type: string
+      addAlert:
+        type: boolean
+      recaptchaToken:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      lastName:
+        type: string
+  ApplyResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      error:
+        type: string
+      userId:
+        format: int32
+        type: integer
+      phoneId:
+        format: int32
+        type: integer
+      applyId:
+        format: int32
+        type: integer
+      transactionId:
+        type: string
+      isFirstApply:
+        type: boolean
+      fileName:
+        type: string
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    description: 'Get JWT token from Auth API and paste it like: "<b>Bearer {token}</b>"'
+    name: Authorization
+    in: header
