@@ -15,24 +15,5 @@
     <script src="dist/swagger-ui-bundle.js" charset="UTF-8"> </script>
     <script src="dist/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script src="dist/swagger-initializer.js" charset="UTF-8"> </script>
-    <script>
-      window.onload = function () {
-          const ui = SwaggerUIBundle({
-          url: "swagger.yaml",
-          dom_id: '#swagger-ui',
-          deepLinking: true,
-          presets: [
-            SwaggerUIBundle.presets.apis,
-            SwaggerUIStandalonePreset
-          ],
-          plugins: [
-            SwaggerUIBundle.plugins.DownloadUrl
-          ],
-          oauth2RedirectUrl: "https://forintbox.github.io/KH-067-01-QA/dist/oauth2-redirect.html",
-          layout: "StandaloneLayout"
-        })
-          window.ui = ui
-      }
-    </script>
   </body>
 </html>
